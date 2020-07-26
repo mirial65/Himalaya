@@ -1,5 +1,6 @@
 package com.example.himalaya.fragments;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.himalaya.DetailActivity;
 import com.example.himalaya.R;
 import com.example.himalaya.adapters.RecommendListAdapter;
+import com.example.himalaya.base.BaseFragment;
 import com.example.himalaya.interfaces.IRecommendViewCallback;
+import com.example.himalaya.presenters.AlbumDetailPresenter;
 import com.example.himalaya.presenters.RecommendPresenter;
 import com.example.himalaya.utils.LogUtil;
 import com.example.himalaya.views.UILoader;
@@ -21,7 +25,7 @@ import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
 import java.util.List;
 
-public class RecommendFragment  extends BaseFragment implements IRecommendViewCallback, UILoader.OnRetryClickListener {
+public class RecommendFragment  extends BaseFragment implements IRecommendViewCallback, UILoader.OnRetryClickListener, RecommendListAdapter.OnRecommendItemClickListener {
     private static final String TAG = "RecommendFragment";
     private View mRootView;
     private RecyclerView mRecommendRV;
@@ -56,8 +60,6 @@ public class RecommendFragment  extends BaseFragment implements IRecommendViewCa
     private View createSuccessView(LayoutInflater layoutInflater, ViewGroup container) {
         //view加载完成
         mRootView = layoutInflater.inflate(R.layout.fragment_recommend, container, false);
-        //view加载完成
-        mRootView = layoutInflater.inflate(R.layout.fragment_recommend, container, false);
         mRecommendRV = mRootView.findViewById(R.id.recommend_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -75,6 +77,7 @@ public class RecommendFragment  extends BaseFragment implements IRecommendViewCa
         });
         mRecommendListAdapter = new RecommendListAdapter();
         mRecommendRV.setAdapter(mRecommendListAdapter);
+        mRecommendListAdapter.setOnRecommendItemClickListener(this);
         return mRootView;
     }
 
@@ -120,8 +123,17 @@ public class RecommendFragment  extends BaseFragment implements IRecommendViewCa
         //表示网络不佳的时候， 重新加载
         if (mRecommendPresenter != null) {
             //重新获取推荐内容即可
-
             mRecommendPresenter.getRecommendList();
         }
+    }
+
+    @Override
+    public void onItemClick(int position, Album album) {
+        //根据位置拿到数据
+        AlbumDetailPresenter.getInstance().setTargetAlbum(album);
+        //item被点击了,跳转
+        Intent intent = new Intent(getContext(), DetailActivity.class);
+        startActivity(intent);
+
     }
 }

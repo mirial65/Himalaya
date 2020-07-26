@@ -1,5 +1,6 @@
 package com.example.himalaya.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdapter.InnerHolder> {
+    private static final String TAG = "RecommendListAdapter";
     private List<Album> mData = new ArrayList<>();
+    private OnRecommendItemClickListener mItemListener = null;
+
     @NonNull
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -26,9 +30,19 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InnerHolder holder, final int position) {
         //这里是封装数据
         holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mItemListener != null) {
+                    int clickPosition = (int) v.getTag();
+                    mItemListener.onItemClick(clickPosition, mData.get(clickPosition));
+                }
+                Log.d(TAG, "onClick: --> " + v.getTag());
+            }
+        });
         holder.setData(mData.get(position));
     }
 
@@ -77,5 +91,12 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 
 
         }
+    }
+
+    public void setOnRecommendItemClickListener(OnRecommendItemClickListener listener) {
+        this.mItemListener = listener;
+    }
+    public interface OnRecommendItemClickListener{
+        void onItemClick(int position, Album album);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.himalaya.fragments;
+package com.example.himalaya.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

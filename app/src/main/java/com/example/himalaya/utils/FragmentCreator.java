@@ -1,8 +1,6 @@
 package com.example.himalaya.utils;
 
-import android.widget.Switch;
-
-import com.example.himalaya.fragments.BaseFragment;
+import com.example.himalaya.base.BaseFragment;
 import com.example.himalaya.fragments.HistoryFragment;
 import com.example.himalaya.fragments.RecommendFragment;
 import com.example.himalaya.fragments.SubscriptionFragment;

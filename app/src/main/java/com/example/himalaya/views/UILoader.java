@@ -2,7 +2,6 @@ package com.example.himalaya.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ public abstract class UILoader extends FrameLayout {
     private View mEmptyView;
     private OnRetryClickListener mOnRetryClickListener = null;
 
+    //定义状态
     public enum UIStatus {
         LOADING, SUCCESS, NETWORK_ERROR, EMPTY, NONE
     }
@@ -70,10 +70,11 @@ public abstract class UILoader extends FrameLayout {
         }
         //设置是否可见
         mLoadingView.setVisibility(mCurrentStatus == UIStatus.LOADING ? VISIBLE : GONE);
-        Log.d("12345", "switchUIByCurrentStatus: " + (mCurrentStatus == UIStatus.LOADING ? VISIBLE : GONE));
+        //Log.d("12345", "switchUIByCurrentStatus: " + (mCurrentStatus == UIStatus.LOADING ? VISIBLE : GONE));
 
         //成功
         if (mSuccessView == null) {
+            //成功并不 知道需要显示什么
             mSuccessView = getSuccessView(this);
             addView(mSuccessView);
         }
@@ -116,6 +117,7 @@ public abstract class UILoader extends FrameLayout {
         return networkErrorView;
     }
 
+    //所以他要是抽象的
     protected abstract View getSuccessView(ViewGroup container);
 
     private View getLoadingView() {
